@@ -31,4 +31,4 @@ A `-boOk` keresésre kiadott találatokat továbbszűri azokra a torrentekre, am
 Keresés a feltöltő nevére.
 
 ## Működés közben
-![image1](kep)
+![image1](https://widevine.is-a.fail/uCFL3y.gif)
