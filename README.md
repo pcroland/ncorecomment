@@ -28,7 +28,7 @@ optional arguments:
 
 ## Példák
 `./ncomment.py -s pcroland -d 20201029`\
-Keresés címre\
+Keresés címre.\
 \
 `./ncomment.py -e -s=-boOk -d 20201029`\
 A `-boOk` keresésre kiadott találatokat tovább szűri azokra a torrentekre,\
