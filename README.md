@@ -40,5 +40,6 @@ Keresés a feltöltő nevére.
 ## Telepítés
 * `git clone https://github.com/pcroland/ncorecomment`
 * `cd ncorecomment`
-* `pip install -r requirements.txt`
-Vagy exeként is letöltheted innen: [https://github.com/pcroland/ncorecomment](https://github.com/pcroland/ncorecomment) (nem igényel semmit a futtatáshoz.)
+* `pip install -r requirements.txt`\
+Vagy exeként is letöltheted innen: [https://github.com/pcroland/ncorecomment](https://github.com/pcroland/ncorecomment)\
+(nem igényel semmit a futtatáshoz.)
