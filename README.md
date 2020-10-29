@@ -1,11 +1,12 @@
-# ncorecomment
+# ncomment
 ### nCore komment kereső
 ![image1](https://widevine.is-a.fail/uCFL3y.gif)
 
 ## Leírás
 * A scriptnek meg lehet adni, hogy mire keressen, milyen keresési módban és milyen dátumtól.
 * Kilistázza azokat a torrenteket, amiknél talál egy adott dátumnál frissebb komment(ek)et.
-* A futtatáskor elmenti az aktuális időt az adott kereséshez, így következő futtatásnál már nem kell dátumot megadni.
+* A futtatáskor elmenti az aktuális időt az adott kereséshez,\
+így következő futtatásnál már nem kell dátumot megadni és onnan fog keresni.
 * A dátumot akármilyen formában meg lehet adni (`2020`, `2020-10-29`, `20201029`, `2020-10-29-22-20-50`)
 
 ## Használat
