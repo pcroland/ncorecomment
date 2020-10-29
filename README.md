@@ -1,5 +1,5 @@
 # ncorecomment
-###nCore komment kereső
+### nCore komment kereső
 ![image1](https://widevine.is-a.fail/uCFL3y.gif)
 
 ## Leírás
@@ -26,8 +26,10 @@ optional arguments:
 
 ## Példák
 `./ncomment.py -s pcroland -d 20201029`\
+Keresés címre
 `./ncomment.py -e -s=-boOk -d 20201029`\
-A `-boOk` keresésre kiadott találatokat továbbszűri azokra a torrentekre, amiknek ténylegesen szerepel a címében a keresés.
+A `-boOk` keresésre kiadott találatokat tovább szűri azokra a torrentekre,\
+amiknek ténylegesen szerepel a címében a keresés.\
 `./ncomment.py -m uploader -s trinitygrp -d 20201029`\
 Keresés a feltöltő nevére.
 
