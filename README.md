@@ -1,5 +1,6 @@
 # ncorecomment
-nCore komment kereső
+###nCore komment kereső
+![image1](https://widevine.is-a.fail/uCFL3y.gif)
 
 ## Leírás
 * A scriptnek meg lehet adni, hogy mire keressen, milyen keresési módban és milyen dátumtól.
@@ -24,11 +25,14 @@ optional arguments:
 ```
 
 ## Példák
-`./ncomment.py -s pcroland -d 20201029`\n
-`./ncomment.py -e -s=-boOk -d 20201029`\n
+`./ncomment.py -s pcroland -d 20201029`\
+`./ncomment.py -e -s=-boOk -d 20201029`\
 A `-boOk` keresésre kiadott találatokat továbbszűri azokra a torrentekre, amiknek ténylegesen szerepel a címében a keresés.
-`./ncomment.py -m uploader -s trinitygrp -d 20201029`\n
+`./ncomment.py -m uploader -s trinitygrp -d 20201029`\
 Keresés a feltöltő nevére.
 
-## Működés közben
-![image1](https://widevine.is-a.fail/uCFL3y.gif)
+## Telepítés
+* `git clone https://github.com/pcroland/ncorecomment`
+* `cd ncorecomment`
+* `pip install -r requirements.txt`
+Vagy exeként is letöltheted innen: [https://github.com/pcroland/ncorecomment](https://github.com/pcroland/ncorecomment) (nem igényel semmit a futtatáshoz.)
