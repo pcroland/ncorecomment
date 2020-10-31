@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-import argparse, http.cookiejar, json, math, os, re, signal, sys
+import argparse, http.cookiejar, json, math, os, re, signal, sys, time
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup as soup
 
 def erase_line():
-    print('\r{}\r'.format(' ' * (os.get_terminal_size().columns - 1)), end='')
+    print('\r{}'.format(' ' * (os.get_terminal_size().columns - 1)), end='')
+
+def truncate():
+    return os.get_terminal_size().columns
 
 def pages(param):
     try:
@@ -19,7 +22,7 @@ def pages(param):
 
 def date_check(param):
     erase_line()
-    print('\r{} | https://ncore.cc/t/{} | {}'.format(counter, id, name), end="")
+    print('\r{} | https://ncore.cc/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
     url = 'https://ncore.cc/ajax.php?action=comments&id=' + param
     r = session.get(url).text
     if '<div class="hsz_jobb_felso_txt">' in r:
@@ -29,16 +32,16 @@ def date_check(param):
         comment_date = re.sub("[^0-9]", "", date).ljust(14, '0')
         if comment_date > compare_date:
             erase_line()
-            print('https://ncore.cc/t/{} | {} | {}'.format(id, date, name))
+            print('\rhttps://ncore.cc/t/{} | {} | {}'.format(id, date, name)[:truncate()])
 
 def hidden_check(param):
     erase_line()
-    print('\r{} | https://ncore.cc/t/{} | {}'.format(counter, id, name), end="")
+    print('\r{} | https://ncore.cc/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
     url = 'https://ncore.cc/t/' + param
     r = session.get(url).text
     if 'Nem található az adatbázisunkban' in r:
         erase_line()
-        print('\rhttps://ncore.cc/t/{} | {}'.format(id, name))
+        print('\rhttps://ncore.cc/t/{} | {}'.format(id, name)[:truncate()])
 
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('-h', '--help',
@@ -139,11 +142,11 @@ if not args.date:
     with open(LOG_PATH, 'w', encoding ='utf-8') as output:
         json.dump(log, output, indent=4, ensure_ascii=False)
 
-url = 'https://ncore.cc/torrents.php?mire=\'' + args.search + '\'&miben=' + mode + '&jsons=true'
+url = 'https://ncore.cc/torrents.php?mire=' + args.search + '&miben=' + mode + '&jsons=true'
 page_number = pages(url)
 
 for i in range(1, page_number + 1):
-    url = 'https://ncore.cc/torrents.php?oldal=' + str(i) + '&mire=\'' + args.search + '\'&miben=' + mode + '&jsons=true'
+    url = 'https://ncore.cc/torrents.php?oldal=' + str(i) + '&mire=' + args.search + '&miben=' + mode + '&jsons=true'
     r = session.get(url).text
     r = json.loads(r)
     for torrent in r['results']:
