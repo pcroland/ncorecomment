@@ -1,6 +1,6 @@
 # ncomment
 ### nCore komment kereső
-![image1](https://widevine.is-a.fail/uCFL3y.gif)
+![image1](https://widevine.is-a.fail/WrBB4g.gif)
 
 ## Leírás
 * A scriptnek meg lehet adni, hogy mire keressen, milyen keresési módban és milyen dátumtól.
