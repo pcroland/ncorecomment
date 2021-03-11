@@ -11,19 +11,17 @@
 
 ## Használat
 ```
-usage: ncomment.py [-h] [-s SEARCH] [-d DATE] [-e] [-m MODE] [-r]
+usage: ncomment.py [-h] [-s SEARCH] [-d DATE] [-e] [-m MODE] [-r] [-v]
 
 optional arguments:
   -h, --help            Show this help message.
   -s SEARCH, --search SEARCH
                         Search word.
   -d DATE, --date DATE  Date for comment comparing.
-  -e, --exact           Only search in torrents that actually contains
-                        the search string in the torrent name.
+  -e, --exact           Only search in torrents that actually contains the search string in the torrent name.
   -m MODE, --mode MODE  Search mode. (title / description / imdb / uploader)
-                        Default: title
-  -r, --hidden          List hidden torrents from your uploads.
-                        If you use this switch other switches will be ignored.
+  -r, --hidden          List hidden torrents from your uploads. If you use this switch other switches will be ignored.
+  -v, --version         Shows version.
 ```
 
 ## Példák

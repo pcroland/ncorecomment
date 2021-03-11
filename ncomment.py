@@ -63,7 +63,8 @@ parser.add_argument('-r', '--hidden',
                     help='List hidden torrents from your uploads. If you use this switch other switches will be ignored.')
 parser.add_argument('-v', '--version',
                     action='version',
-                    version='ncomment 1.2',)
+                    version='ncomment 1.2',
+                    help='Shows version.')
 args = parser.parse_args()
 
 if getattr(sys, 'frozen', False):
