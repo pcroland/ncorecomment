@@ -22,8 +22,8 @@ def pages(param):
 
 def date_check(param):
     erase_line()
-    print('\r{} | https://ncore.cc/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
-    url = 'https://ncore.cc/ajax.php?action=comments&id=' + param
+    print('\r{} | https://ncore.pro/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
+    url = 'https://ncore.pro/ajax.php?action=comments&id=' + param
     r = session.get(url).text
     if '<div class="hsz_jobb_felso_txt">' in r:
         page = soup(r, 'html.parser')
@@ -32,16 +32,16 @@ def date_check(param):
         comment_date = re.sub("[^0-9]", "", date).ljust(14, '0')
         if comment_date > compare_date:
             erase_line()
-            print('\rhttps://ncore.cc/t/{} | {} | {}'.format(id, date, name)[:truncate()])
+            print('\rhttps://ncore.pro/t/{} | {} | {}'.format(id, date, name)[:truncate()])
 
 def hidden_check(param):
     erase_line()
-    print('\r{} | https://ncore.cc/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
-    url = 'https://ncore.cc/t/' + param
+    print('\r{} | https://ncore.pro/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
+    url = 'https://ncore.pro/t/' + param
     r = session.get(url).text
     if 'Nem található az adatbázisunkban' in r:
         erase_line()
-        print('\rhttps://ncore.cc/t/{} | {}'.format(id, name)[:truncate()])
+        print('\rhttps://ncore.pro/t/{} | {}'.format(id, name)[:truncate()])
 
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('-h', '--help',
@@ -61,6 +61,9 @@ parser.add_argument('-m', '--mode',
 parser.add_argument('-r', '--hidden',
                     action='store_true',
                     help='List hidden torrents from your uploads. If you use this switch other switches will be ignored.')
+parser.add_argument('-v', '--version',
+                    action='version',
+                    version='ncomment 1.2',)
 args = parser.parse_args()
 
 if getattr(sys, 'frozen', False):
@@ -76,7 +79,7 @@ cookies = http.cookiejar.MozillaCookieJar(COOKIES_PATH)
 cookies.load()
 session = requests.Session()
 session.cookies = cookies
-response = session.get('https://ncore.cc/')
+response = session.get('https://ncore.pro/')
 if 'login.php' in response.url:
     print('ERROR: expired cookies.txt')
     sys.exit(1)
@@ -92,7 +95,7 @@ if not os.path.isfile(LOG_PATH):
 counter = 0
 
 if args.hidden:
-    r = session.get('https://ncore.cc/profile.php?action=torrents').text
+    r = session.get('https://ncore.pro/profile.php?action=torrents').text
     page = soup(r, 'html.parser')
     for torrent in soup.select(page, '.torrent_txt_mini2 a'):
         id = torrent['href'].split('=')[-1]
@@ -101,11 +104,11 @@ if args.hidden:
         hidden_check(id)
     erase_line()
     print('\r{} torrent checked.'.format(counter))
-    exit()
+    sys.exit(1)
 
 if not args.search:
     print('ERROR: You have to use -r or -s.')
-    exit()
+    sys.exit(1)
 
 if args.mode == 'title':
     mode = 'name'
@@ -142,11 +145,11 @@ if not args.date:
     with open(LOG_PATH, 'w', encoding ='utf-8') as output:
         json.dump(log, output, indent=4, ensure_ascii=False)
 
-url = 'https://ncore.cc/torrents.php?mire=' + args.search + '&miben=' + mode + '&jsons=true'
+url = 'https://ncore.pro/torrents.php?mire=' + args.search + '&miben=' + mode + '&jsons=true'
 page_number = pages(url)
 
 for i in range(1, page_number + 1):
-    url = 'https://ncore.cc/torrents.php?oldal=' + str(i) + '&mire=' + args.search + '&miben=' + mode + '&jsons=true'
+    url = 'https://ncore.pro/torrents.php?oldal=' + str(i) + '&mire=' + args.search + '&miben=' + mode + '&jsons=true'
     r = session.get(url).text
     r = json.loads(r)
     for torrent in r['results']:
