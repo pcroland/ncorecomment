@@ -185,7 +185,7 @@ if args.category:
         if c not in valid_categories:
             print(f'ERROR: {c} is not a valid category.\nValid categories are: {", ".join(valid_categories)}')
             sys.exit(1)
-    type_and_mode = f'{",".join(args.category)}&tipus=allkivalasztottak_kozott'
+    type_and_mode = f'&kivalasztott_tipus={",".join(args.category)}&tipus=kivalasztottak_kozott'
 
 url = f'https://ncore.pro/torrents.php?&mire={args.search}&miben={mode}{type_and_mode}&jsons=true'
 page_number = pages(url)
