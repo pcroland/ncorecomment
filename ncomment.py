@@ -86,7 +86,7 @@ parser.add_argument('-r', '--hidden',
                     help='List hidden torrents from your uploads. If you use this switch other switches will be ignored.')
 parser.add_argument('-v', '--version',
                     action='version',
-                    version='ncomment 1.2',
+                    version='ncomment 1.3',
                     help='Shows version.')
 args = parser.parse_args()
 
@@ -173,10 +173,13 @@ type_and_mode = ''
 if args.all:
     type_and_mode = '&tipus=all'
 
-valid_categories = ['xvid_hun', 'xvid', 'dvd_hun', 'dvd', 'dvd9_hun', 'dvd9', 'hd_hun', 'hd', 'xvidser_hun',
-                    'xvidser', 'dvdser_hun', 'dvdser', 'hdser_hun', 'hdser', 'mp3_hun', 'mp3', 'lossless_hun',
-                    'lossless', 'clip', 'xxx_xvid', 'xxx_dvd', 'xxx_imageset', 'xxx_hd', 'game_iso', 'game_rip',
-                    'console', 'iso', 'misc', 'mobil', 'ebook_hun', 'ebook']
+valid_categories = ['xvid_hun', 'xvid', 'dvd_hun', 'dvd', 'dvd9_hun', 'dvd9', 'hd_hun', 'hd',
+                    'xvidser_hun', 'xvidser', 'dvdser_hun', 'dvdser', 'hdser_hun', 'hdser',
+                    'mp3_hun', 'mp3', 'lossless_hun', 'lossless', 'clip',
+                    'xxx_xvid', 'xxx_dvd', 'xxx_imageset', 'xxx_hd',
+                    'game_iso', 'game_rip', 'console',
+                    'iso', 'misc', 'mobil',
+                    'ebook_hun', 'ebook']
 if args.category:
     for c in args.category:
         if c not in valid_categories:
