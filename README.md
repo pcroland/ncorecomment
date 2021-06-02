@@ -31,8 +31,8 @@ optional arguments:
 `./ncomment.py -s pcroland -d 20201029`\
 Keresés címre.\
 \
-`./ncomment.py -s pcroland -d 20201029 -c xvid_hun, xvidser_hun`\
-Keresés címre, xvid_hun (magyar filmek) és xvidser_hun (magyar sorozatok) kategóriában.\
+`./ncomment.py -s pcroland -d 20201029 -c xvid_hun hdser_hun`\
+Keresés címre, xvid_hun (magyar SD filmek) és hdser_hun (magyar HD sorozatok) kategóriában.\
 \
 `./ncomment.py -e -s=-boOk -d 20201029`\
 A `-boOk` keresésre kiadott találatokat tovább szűri azokra a torrentekre,\
