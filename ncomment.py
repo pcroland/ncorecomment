@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import argparse, http.cookiejar, json, math, os, re, signal, sys, time
+import argparse, http.cookiejar, json, math, os, re, signal, sys
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup as soup
@@ -43,6 +43,23 @@ def hidden_check(param):
         erase_line()
         print('\rhttps://ncore.pro/t/{} | {}'.format(id, name)[:truncate()])
 
+def login():
+    print('You need to login to use this script.')
+    form_data = {
+        "submitted": 1,
+        "nev": input('Username: '),
+        "pass": input('Password: '),
+        "2factor": input('Two Factor (empty if none): '),
+        "ne_leptessen_ki": 1
+    }
+    session.post('https://ncore.pro/login.php?2fa', form_data, allow_redirects=False)
+    if session.head('https://ncore.pro/').status_code == 200:
+        session.cookies.save()
+        print('Successful login.')
+    else:
+        print('ERROR: Login failed, wrong password/2FA or maybe a captcha appeared.')
+        sys.exit(1)
+
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('-h', '--help',
                     action='help',
@@ -73,24 +90,24 @@ else:
     SCRIPT_PATH = os.path.dirname(__file__)
 
 COOKIES_PATH = os.path.join(SCRIPT_PATH, 'cookies.txt')
+session = requests.Session()
+session.cookies = http.cookiejar.MozillaCookieJar(COOKIES_PATH)
 if not os.path.isfile(COOKIES_PATH):
     print('ERROR: cookies.txt is missing.')
-    sys.exit(1)
-cookies = http.cookiejar.MozillaCookieJar(COOKIES_PATH)
-cookies.load()
-session = requests.Session()
-session.cookies = cookies
-response = session.get('https://ncore.pro/')
-if 'login.php' in response.url:
-    print('ERROR: expired cookies.txt')
-    sys.exit(1)
+    login()
+else:
+    session.cookies.load()
+    response = session.get('https://ncore.pro/')
+    if 'login.php' in response.url:
+        print('ERROR: expired cookies.txt')
+        login()
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 LOG_PATH = os.path.join(SCRIPT_PATH, 'log.json')
 if not os.path.isfile(LOG_PATH):
     empty = {}
-    with open(LOG_PATH, 'w', encoding ='utf-8') as output:
+    with open(LOG_PATH, 'w', encoding='utf-8') as output:
         json.dump(empty, output, indent=4, ensure_ascii=False)
 
 counter = 0
@@ -129,7 +146,7 @@ if args.date:
         log = json.load(file)
     new_date = str(int(datetime.now().strftime('%Y%m%d%H%M%S')) - 5)
     log[args.search] = new_date
-    with open(LOG_PATH, 'w', encoding ='utf-8') as output:
+    with open(LOG_PATH, 'w', encoding='utf-8') as output:
         json.dump(log, output, indent=4, ensure_ascii=False)
 
 if not args.date:
@@ -143,7 +160,7 @@ if not args.date:
     print('Searching comments newer than {}.'.format(compare_date))
     new_date = datetime.now().strftime('%Y%m%d%H%M%S')
     log[args.search] = new_date
-    with open(LOG_PATH, 'w', encoding ='utf-8') as output:
+    with open(LOG_PATH, 'w', encoding='utf-8') as output:
         json.dump(log, output, indent=4, ensure_ascii=False)
 
 url = 'https://ncore.pro/torrents.php?mire=' + args.search + '&miben=' + mode + '&jsons=true'
