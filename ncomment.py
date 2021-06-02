@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
 import argparse, http.cookiejar, json, math, os, re, signal, sys
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup as soup
 
 def erase_line():
-    print('\r{}'.format(' ' * (os.get_terminal_size().columns - 1)), end='')
+    print(f'\r{" " * (os.get_terminal_size().columns - 1)}', end='')
 
 def truncate():
     return os.get_terminal_size().columns
@@ -22,8 +21,8 @@ def pages(param):
 
 def date_check(param):
     erase_line()
-    print('\r{} | https://ncore.pro/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
-    url = 'https://ncore.pro/ajax.php?action=comments&id=' + param
+    print(f'\r{counter} | https://ncore.pro/t/{id} | {name}'[:truncate()], end="")
+    url = f'https://ncore.pro/ajax.php?action=comments&id={param}'
     r = session.get(url).text
     if '<div class="hsz_jobb_felso_txt">' in r:
         page = soup(r, 'html.parser')
@@ -32,16 +31,16 @@ def date_check(param):
         comment_date = re.sub("[^0-9]", "", date).ljust(14, '0')
         if comment_date > compare_date:
             erase_line()
-            print('\rhttps://ncore.pro/t/{} | {} | {}'.format(id, date, name)[:truncate()])
+            print(f'\rhttps://ncore.pro/t/{id} | {date} | {name}'[:truncate()])
 
 def hidden_check(param):
     erase_line()
-    print('\r{} | https://ncore.pro/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
-    url = 'https://ncore.pro/t/' + param
+    print(f'\r{counter} | https://ncore.pro/t/{id} | {name}'[:truncate()], end="")
+    url = f'https://ncore.pro/t/{param}'
     r = session.get(url).text
     if 'Nem található az adatbázisunkban' in r:
         erase_line()
-        print('\rhttps://ncore.pro/t/{} | {}'.format(id, name)[:truncate()])
+        print(f'\rhttps://ncore.pro/t/{id} | {name}'[:truncate()])
 
 def login():
     print('You need to login to use this script.')
@@ -121,7 +120,7 @@ if args.hidden:
         counter += 1
         hidden_check(id)
     erase_line()
-    print('\r{} torrent checked.'.format(counter))
+    print('\r{counter} torrent checked.')
     sys.exit(1)
 
 if not args.search:
@@ -157,17 +156,17 @@ if not args.date:
     except:
         print('ERROR: no date was found in log, you have to specify one with -d.')
         sys.exit(1)
-    print('Searching comments newer than {}.'.format(compare_date))
+    print(f'Searching comments newer than {compare_date}.')
     new_date = datetime.now().strftime('%Y%m%d%H%M%S')
     log[args.search] = new_date
     with open(LOG_PATH, 'w', encoding='utf-8') as output:
         json.dump(log, output, indent=4, ensure_ascii=False)
 
-url = 'https://ncore.pro/torrents.php?mire=' + args.search + '&miben=' + mode + '&jsons=true'
+url = f'https://ncore.pro/torrents.php?mire={args.search}&miben={mode}&jsons=true'
 page_number = pages(url)
 
 for i in range(1, page_number + 1):
-    url = 'https://ncore.pro/torrents.php?oldal=' + str(i) + '&mire=' + args.search + '&miben=' + mode + '&jsons=true'
+    url = f'https://ncore.pro/torrents.php?oldal={str(i)}&mire={args.search}&miben={mode}&jsons=true'
     r = session.get(url).text
     r = json.loads(r)
     for torrent in r['results']:
@@ -182,4 +181,4 @@ for i in range(1, page_number + 1):
             date_check(id)
 
 erase_line()
-print('\r{} torrent checked.'.format(counter))
+print(f'\r{counter} torrent checked.')
