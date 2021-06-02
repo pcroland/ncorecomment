@@ -1,3 +1,4 @@
+# !/usr/bin/env python3
 import argparse, http.cookiejar, json, math, os, re, signal, sys
 from datetime import datetime
 import requests
@@ -71,6 +72,12 @@ parser.add_argument('-d', '--date',
 parser.add_argument('-e', '--exact',
                     action='store_true',
                     help='Only search in torrents that actually contains the search string in the torrent name.')
+parser.add_argument('-a', '--all',
+                    action='store_true',
+                    help='Search in every category, not just your own.')
+parser.add_argument('-c', '--category',
+                    nargs='*',
+                    help='Add search category(ies).')
 parser.add_argument('-m', '--mode',
                     default='title',
                     help='Search mode. (title / description / imdb / uploader)')
@@ -162,11 +169,26 @@ if not args.date:
     with open(LOG_PATH, 'w', encoding='utf-8') as output:
         json.dump(log, output, indent=4, ensure_ascii=False)
 
-url = f'https://ncore.pro/torrents.php?mire={args.search}&miben={mode}&jsons=true'
+type_and_mode = ''
+if args.all:
+    type_and_mode = '&tipus=all'
+
+valid_categories = ['xvid_hun', 'xvid', 'dvd_hun', 'dvd', 'dvd9_hun', 'dvd9', 'hd_hun', 'hd', 'xvidser_hun',
+                    'xvidser', 'dvdser_hun', 'dvdser', 'hdser_hun', 'hdser', 'mp3_hun', 'mp3', 'lossless_hun',
+                    'lossless', 'clip', 'xxx_xvid', 'xxx_dvd', 'xxx_imageset', 'xxx_hd', 'game_iso', 'game_rip',
+                    'console', 'iso', 'misc', 'mobil', 'ebook_hun', 'ebook']
+if args.category:
+    for c in args.category:
+        if c not in valid_categories:
+            print(f'ERROR: {c} is not a valid category.\nValid categories are: {", ".join(valid_categories)}')
+            sys.exit(1)
+    type_and_mode = f'{",".join(args.category)}&tipus=allkivalasztottak_kozott'
+
+url = f'https://ncore.pro/torrents.php?&mire={args.search}&miben={mode}{type_and_mode}&jsons=true'
 page_number = pages(url)
 
 for i in range(1, page_number + 1):
-    url = f'https://ncore.pro/torrents.php?oldal={str(i)}&mire={args.search}&miben={mode}&jsons=true'
+    url = f'https://ncore.pro/torrents.php?oldal={str(i)}&mire={args.search}&miben={mode}{type_and_mode}&jsons=true'
     r = session.get(url).text
     r = json.loads(r)
     for torrent in r['results']:
