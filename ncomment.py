@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
-import argparse, http.cookiejar, json, math, os, re, signal, sys, time
+# !/usr/bin/env python3
+import argparse, http.cookiejar, json, math, os, re, signal, sys
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup as soup
 
 def erase_line():
-    print('\r{}'.format(' ' * (os.get_terminal_size().columns - 1)), end='')
+    print(f'\r{" " * (os.get_terminal_size().columns - 1)}', end='')
 
 def truncate():
     return os.get_terminal_size().columns
@@ -22,8 +22,8 @@ def pages(param):
 
 def date_check(param):
     erase_line()
-    print('\r{} | https://ncore.pro/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
-    url = 'https://ncore.pro/ajax.php?action=comments&id=' + param
+    print(f'\r{counter} | https://ncore.pro/t/{id} | {name}'[:truncate()], end="")
+    url = f'https://ncore.pro/ajax.php?action=comments&id={param}'
     r = session.get(url).text
     if '<div class="hsz_jobb_felso_txt">' in r:
         page = soup(r, 'html.parser')
@@ -32,16 +32,33 @@ def date_check(param):
         comment_date = re.sub("[^0-9]", "", date).ljust(14, '0')
         if comment_date > compare_date:
             erase_line()
-            print('\rhttps://ncore.pro/t/{} | {} | {}'.format(id, date, name)[:truncate()])
+            print(f'\rhttps://ncore.pro/t/{id} | {date} | {name}'[:truncate()])
 
 def hidden_check(param):
     erase_line()
-    print('\r{} | https://ncore.pro/t/{} | {}'.format(counter, id, name)[:truncate()], end="")
-    url = 'https://ncore.pro/t/' + param
+    print(f'\r{counter} | https://ncore.pro/t/{id} | {name}'[:truncate()], end="")
+    url = f'https://ncore.pro/t/{param}'
     r = session.get(url).text
     if 'Nem található az adatbázisunkban' in r:
         erase_line()
-        print('\rhttps://ncore.pro/t/{} | {}'.format(id, name)[:truncate()])
+        print(f'\rhttps://ncore.pro/t/{id} | {name}'[:truncate()])
+
+def login():
+    print('You need to login to use this script.')
+    form_data = {
+        "submitted": 1,
+        "nev": input('Username: '),
+        "pass": input('Password: '),
+        "2factor": input('Two Factor (empty if none): '),
+        "ne_leptessen_ki": 1
+    }
+    session.post('https://ncore.pro/login.php?2fa', form_data, allow_redirects=False)
+    if session.head('https://ncore.pro/').status_code == 200:
+        session.cookies.save()
+        print('Successful login.')
+    else:
+        print('ERROR: Login failed, wrong password/2FA or maybe a captcha appeared.')
+        sys.exit(1)
 
 parser = argparse.ArgumentParser(add_help=False)
 parser.add_argument('-h', '--help',
@@ -55,6 +72,12 @@ parser.add_argument('-d', '--date',
 parser.add_argument('-e', '--exact',
                     action='store_true',
                     help='Only search in torrents that actually contains the search string in the torrent name.')
+parser.add_argument('-a', '--all',
+                    action='store_true',
+                    help='Search in every category, not just your own.')
+parser.add_argument('-c', '--category',
+                    nargs='*',
+                    help='Add search category(ies).')
 parser.add_argument('-m', '--mode',
                     default='title',
                     help='Search mode. (title / description / imdb / uploader)')
@@ -63,7 +86,7 @@ parser.add_argument('-r', '--hidden',
                     help='List hidden torrents from your uploads. If you use this switch other switches will be ignored.')
 parser.add_argument('-v', '--version',
                     action='version',
-                    version='ncomment 1.2',
+                    version='ncomment 1.3',
                     help='Shows version.')
 args = parser.parse_args()
 
@@ -73,24 +96,24 @@ else:
     SCRIPT_PATH = os.path.dirname(__file__)
 
 COOKIES_PATH = os.path.join(SCRIPT_PATH, 'cookies.txt')
+session = requests.Session()
+session.cookies = http.cookiejar.MozillaCookieJar(COOKIES_PATH)
 if not os.path.isfile(COOKIES_PATH):
     print('ERROR: cookies.txt is missing.')
-    sys.exit(1)
-cookies = http.cookiejar.MozillaCookieJar(COOKIES_PATH)
-cookies.load()
-session = requests.Session()
-session.cookies = cookies
-response = session.get('https://ncore.pro/')
-if 'login.php' in response.url:
-    print('ERROR: expired cookies.txt')
-    sys.exit(1)
+    login()
+else:
+    session.cookies.load()
+    response = session.get('https://ncore.pro/')
+    if 'login.php' in response.url:
+        print('ERROR: expired cookies.txt')
+        login()
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 
 LOG_PATH = os.path.join(SCRIPT_PATH, 'log.json')
 if not os.path.isfile(LOG_PATH):
     empty = {}
-    with open(LOG_PATH, 'w', encoding ='utf-8') as output:
+    with open(LOG_PATH, 'w', encoding='utf-8') as output:
         json.dump(empty, output, indent=4, ensure_ascii=False)
 
 counter = 0
@@ -104,7 +127,7 @@ if args.hidden:
         counter += 1
         hidden_check(id)
     erase_line()
-    print('\r{} torrent checked.'.format(counter))
+    print('\r{counter} torrent checked.')
     sys.exit(1)
 
 if not args.search:
@@ -129,7 +152,7 @@ if args.date:
         log = json.load(file)
     new_date = str(int(datetime.now().strftime('%Y%m%d%H%M%S')) - 5)
     log[args.search] = new_date
-    with open(LOG_PATH, 'w', encoding ='utf-8') as output:
+    with open(LOG_PATH, 'w', encoding='utf-8') as output:
         json.dump(log, output, indent=4, ensure_ascii=False)
 
 if not args.date:
@@ -140,17 +163,35 @@ if not args.date:
     except:
         print('ERROR: no date was found in log, you have to specify one with -d.')
         sys.exit(1)
-    print('Searching comments newer than {}.'.format(compare_date))
+    print(f'Searching comments newer than {compare_date}.')
     new_date = datetime.now().strftime('%Y%m%d%H%M%S')
     log[args.search] = new_date
-    with open(LOG_PATH, 'w', encoding ='utf-8') as output:
+    with open(LOG_PATH, 'w', encoding='utf-8') as output:
         json.dump(log, output, indent=4, ensure_ascii=False)
 
-url = 'https://ncore.pro/torrents.php?mire=' + args.search + '&miben=' + mode + '&jsons=true'
+type_and_mode = ''
+if args.all:
+    type_and_mode = '&tipus=all'
+
+valid_categories = ['xvid_hun', 'xvid', 'dvd_hun', 'dvd', 'dvd9_hun', 'dvd9', 'hd_hun', 'hd',
+                    'xvidser_hun', 'xvidser', 'dvdser_hun', 'dvdser', 'hdser_hun', 'hdser',
+                    'mp3_hun', 'mp3', 'lossless_hun', 'lossless', 'clip',
+                    'xxx_xvid', 'xxx_dvd', 'xxx_imageset', 'xxx_hd',
+                    'game_iso', 'game_rip', 'console',
+                    'iso', 'misc', 'mobil',
+                    'ebook_hun', 'ebook']
+if args.category:
+    for c in args.category:
+        if c not in valid_categories:
+            print(f'ERROR: {c} is not a valid category.\nValid categories are: {", ".join(valid_categories)}')
+            sys.exit(1)
+    type_and_mode = f'&kivalasztott_tipus={",".join(args.category)}&tipus=kivalasztottak_kozott'
+
+url = f'https://ncore.pro/torrents.php?&mire={args.search}&miben={mode}{type_and_mode}&jsons=true'
 page_number = pages(url)
 
 for i in range(1, page_number + 1):
-    url = 'https://ncore.pro/torrents.php?oldal=' + str(i) + '&mire=' + args.search + '&miben=' + mode + '&jsons=true'
+    url = f'https://ncore.pro/torrents.php?oldal={str(i)}&mire={args.search}&miben={mode}{type_and_mode}&jsons=true'
     r = session.get(url).text
     r = json.loads(r)
     for torrent in r['results']:
@@ -165,4 +206,4 @@ for i in range(1, page_number + 1):
             date_check(id)
 
 erase_line()
-print('\r{} torrent checked.'.format(counter))
+print(f'\r{counter} torrent checked.')
