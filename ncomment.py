@@ -1,4 +1,4 @@
-# !/usr/bin/env python3
+#!/usr/bin/env python3
 import argparse, http.cookiejar, json, math, os, re, signal, sys
 from datetime import datetime
 import requests

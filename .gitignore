@@ -1,3 +1,6 @@
 cookies*
 log.json
 ncomment.exe
+dist/
+build/
+__pycache__/
