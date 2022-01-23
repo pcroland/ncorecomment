@@ -64,8 +64,11 @@ def hidden_check(id_):
 
 
 def login(username, password):
-    rprint(f'logging in as [bold cyan]{username}[/bold cyan]', end='')
-    rprint(f' with 2FA: [bold cyan]{args.twofactor}[/bold cyan][white]...[/white] ') if args.twofactor != '' else print('... ')
+    rprint(f'logging in as [bold cyan]{username}[/bold cyan]', end='', flush=True)
+    if args.twofactor != '':
+        rprint(f' with 2FA: [bold cyan]{args.twofactor}[/bold cyan][white]...[/white] ', end='', flush=True)
+    else:
+        print('... ', end='', flush=True)
     form_data = {
         'submitted': 1,
         'nev': username,
