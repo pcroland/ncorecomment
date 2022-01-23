@@ -45,7 +45,7 @@ def pages(param):
 def date_check(id_):
     erase_line()
     length = len(id_) + len(str(counter)) + 27
-    rprint(f'{counter} | https://ncore.pro/t/[bold]{id_}[/bold] | [bold yellow]{name[:truncate() - length]}[/bold yellow]', end='')
+    rprint(f'{counter} | https://ncore.pro/t/[bold]{id_}[/bold] | [not italic bold yellow]{name[:truncate() - length]}[/not italic bold yellow]', end='')
     url = f'https://ncore.pro/ajax.php?action=comments&id={id_}'
     r = session.get(url).text
     if '<div class="hsz_jobb_felso_txt">' in r:
@@ -56,19 +56,19 @@ def date_check(id_):
         if comment_date > compare_date:
             erase_line()
             length = len(id_) + len(date) + 27
-            rprint(f'https://ncore.pro/t/[bold]{id_}[/bold] | [not bold]{date}[/not bold] | [bold yellow]{name[:truncate() - length]}[/bold yellow]')
+            rprint(f'https://ncore.pro/t/[bold]{id_}[/bold] | [not bold]{date}[/not bold] | [not italic bold yellow]{name[:truncate() - length]}[/not italic bold yellow]')
 
 
 def hidden_check(id_):
     erase_line()
     length = len(id_) + len(str(counter)) + 27
-    rprint(f'{counter} | https://ncore.pro/t/[bold]{id_}[/bold] | [bold yellow]{name[:truncate() - length]}[/bold yellow]', end='')
+    rprint(f'{counter} | https://ncore.pro/t/[bold]{id_}[/bold] | [not italic bold yellow]{name[:truncate() - length]}[/not italic bold yellow]', end='')
     url = f'https://ncore.pro/t/{id_}'
     r = session.get(url).text
     if 'Nem található az adatbázisunkban' in r:
         erase_line()
         length = len(id_) + 27
-        rprint(f'https://ncore.pro/t/{id_} | [bold yellow]{name[:truncate() - length]}[/bold yellow]')
+        rprint(f'https://ncore.pro/t/{id_} | [not italic bold yellow]{name[:truncate() - length]}[/not italic bold yellow]')
 
 
 def login(username, password):
@@ -100,7 +100,7 @@ parser.add_argument('-h', '--help',
                     help='Show this help message.')
 parser.add_argument('-v', '--version',
                     action='version',
-                    version='ncomment 1.4',
+                    version='ncomment 1.4.1',
                     help='Shows version.')
 parser.add_argument('-2fa', '--twofactor',
                     default='',
