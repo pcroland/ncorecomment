@@ -5,3 +5,5 @@ ncomment.exe
 dist/
 build/
 __pycache__/
+ncomment.spec
+*zip
