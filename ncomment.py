@@ -100,7 +100,7 @@ parser.add_argument('-h', '--help',
                     help='Show this help message.')
 parser.add_argument('-v', '--version',
                     action='version',
-                    version='ncomment 1.3',
+                    version='ncomment 1.4',
                     help='Shows version.')
 parser.add_argument('-2fa', '--twofactor',
                     default='',
