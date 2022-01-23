@@ -1,10 +1,18 @@
 #!/usr/bin/env python3
-import argparse, http.cookiejar, json, math, os, re, signal, sys
+import argparse
+import http.cookiejar
+import json
+import math
+import os
+import re
+import signal
+import sys
 from datetime import datetime
+
 import requests
+import toml
 from bs4 import BeautifulSoup as soup
 from rich import print as rprint
-import toml
 
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 

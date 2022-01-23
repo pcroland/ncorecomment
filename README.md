@@ -1,6 +1,6 @@
 # ncomment
 ### nCore komment kereső
-![image1](https://widevine.is-a.fail/WrBB4g.gif)
+![image1](https://i.kek.sh/NCleQQ9BVol.gif)
 
 ## Leírás
 * A scriptnek meg lehet adni, hogy mire keressen, milyen keresési módban, milyen dátumtól és milyen kategóriában.
@@ -11,10 +11,13 @@
 
 ## Használat
 ```
-usage: ncomment.py [-h] [-s SEARCH] [-d DATE] [-e] [-a] [-c [CATEGORY ...]] [-m MODE] [-r] [-v]
+usage: ncomment.py [-h] [-v] [-2fa TWOFACTOR] [-s SEARCH] [-d DATE] [-e] [-a] [-c [CATEGORY ...]] [-m MODE] [-r]
 
-optional arguments:
+options:
   -h, --help            Show this help message.
+  -v, --version         Shows version.
+  -2fa TWOFACTOR, --twofactor TWOFACTOR
+                        2FA code for login.
   -s SEARCH, --search SEARCH
                         Search word.
   -d DATE, --date DATE  Date for comment comparing.
@@ -24,7 +27,6 @@ optional arguments:
                         Add search category(ies).
   -m MODE, --mode MODE  Search mode. (title / description / imdb / uploader)
   -r, --hidden          List hidden torrents from your uploads. If you use this switch other switches will be ignored.
-  -v, --version         Shows version.
 ```
 
 ## Példák
@@ -66,8 +68,12 @@ Az oldalon megtalálható összes kategória támoagatott.
 </details>
 
 ## Telepítés
-* `git clone https://github.com/pcroland/ncorecomment`
-* `cd ncorecomment`
-* `pip install -r requirements.txt`\
+```sh
+git clone https://github.com/pcroland/ncorecomment
+cd ncorecomment
+pip install -r requirements.txt
+```
+- felhasználónév és jelszó megadása `login.toml`-ben.
+
 Vagy exeként is letöltheted innen: [https://github.com/pcroland/ncorecomment/releases](https://github.com/pcroland/ncorecomment/releases)\
 (nem igényel semmit a futtatáshoz.)
