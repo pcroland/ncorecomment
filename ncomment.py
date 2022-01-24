@@ -100,7 +100,7 @@ parser.add_argument('-h', '--help',
                     help='Show this help message.')
 parser.add_argument('-v', '--version',
                     action='version',
-                    version='ncomment 1.4.1',
+                    version='ncomment 1.4.2',
                     help='Shows version.')
 parser.add_argument('-2fa', '--twofactor',
                     default='',
@@ -212,8 +212,8 @@ if __name__ == '__main__':
             sys.exit(1)
         new_date = datetime.now().strftime('%Y%m%d%H%M%S')
         log[args.search] = new_date
-    cd = compare_date
-    readable_date = f'{cd[0:4]}.{cd[5:6].zfill(2)}.{cd[7:8].zfill(2)}. {cd[9:10].zfill(2)}:{cd[11:12].zfill(2)}:{cd[13:14].zfill(2)}'
+    cd = str(compare_date)
+    readable_date = f'{cd[0:4]}.{cd[4:6]}.{cd[6:8]}. {cd[8:10]}:{cd[10:12]}:{cd[12:14]}'
     rprint(f'Searching comments newer than [bold cyan]{readable_date}[/bold cyan].')
 
     type_and_mode = ''
