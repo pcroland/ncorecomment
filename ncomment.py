@@ -132,15 +132,12 @@ if __name__ == '__main__':
     else:
         SCRIPT_PATH = os.path.dirname(__file__)
 
-    userpass1 = os.path.join(SCRIPT_PATH, 'login2.toml')
-    userpass2 = os.path.join(SCRIPT_PATH, 'login.toml')
-    if os.path.exists(userpass1):
-        userpass = opentoml(userpass1)['login']
-    elif os.path.exists(userpass2):
-        userpass = opentoml(userpass2)['login']
-    else:
+    userpass_fl = os.path.join(SCRIPT_PATH, 'login.toml')
+    if not os.path.exists(userpass_fl):
         print(f'[bold red]ERROR: login.toml is missing.[/bold red]')
         sys.exit(1)
+    else:
+        userpass = opentoml(userpass_fl)['login']
 
     username = userpass.split(':')[0]
     password = userpass.split(':')[1]
