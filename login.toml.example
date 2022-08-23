@@ -1,1 +1,3 @@
-login = 'user:pass'
+user = 'username'
+pass = 'password'
+twofactor = false
