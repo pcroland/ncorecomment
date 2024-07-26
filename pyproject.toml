@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ncorecomment"
+version = "1.6.0"
+description = "Python script for searching new comments on nCore"
+authors = ["pcroland <pcroland@protonmail.ch>"]
+license = "MIT"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+beautifulsoup4 = "^4.12.3"
+requests = "^2.32.3"
+toml = "^0.10.2"
+rich = "^13.7.1"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.26.0"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
